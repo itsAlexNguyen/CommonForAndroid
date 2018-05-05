@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.Switch
 import android.widget.TextView
 
-import com.ngam.common.R
+import com.ngam.abstractions.R
 
 /**
  * This is a sample ViewHolder for the Sample UI element.
