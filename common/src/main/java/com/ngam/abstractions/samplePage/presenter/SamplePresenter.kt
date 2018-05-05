@@ -11,7 +11,7 @@ class SamplePresenter(val view: SampleView): AbstractPresenter() {
     var sampleData4: Boolean = false // Not initially checked.
 
     fun createCheckChangeListener(): CompoundButton.OnCheckedChangeListener {
-        return CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+        return CompoundButton.OnCheckedChangeListener { _, _ ->
             view.makeToast("Changed check!")
         }
     }
