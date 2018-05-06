@@ -59,7 +59,7 @@ abstract class AbstractActivity<Presenter: AbstractPresenter, Adapter: AbstractD
      * It can be overriden as needed to provide different layouts if required.
      */
     open fun getLayoutId(): Int {
-        return R.layout.abstract_recycler_view_activity;
+        return R.layout.abstract_recycler_view_activity
     }
 
     /**
