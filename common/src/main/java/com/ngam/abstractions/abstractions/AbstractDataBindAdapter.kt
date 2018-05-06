@@ -3,6 +3,9 @@ package com.ngam.abstractions.abstractions
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 
+/**
+ * This contains information for binding multiple views to an adapter.
+ */
 abstract class AbstractDataBindAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     protected var listItems : ArrayList<AbstractDataBinder<*>> = ArrayList()
 
