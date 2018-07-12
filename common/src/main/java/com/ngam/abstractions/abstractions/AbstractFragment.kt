@@ -1,15 +1,16 @@
 package com.ngam.abstractions.abstractions
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import android.support.v4.app.Fragment
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.ngam.abstractions.R
 
-abstract class AbstractActivity<Presenter: AbstractPresenter, Adapter: AbstractDataBindAdapter>:
-        AppCompatActivity() {
+abstract class AbstractFragment<Presenter: AbstractPresenter, Adapter: AbstractDataBindAdapter>: Fragment() {
     // DataSource
     protected lateinit var dataSource: AbstractClassProperties<Presenter, Adapter>
     // Presenter and Adapter
@@ -19,8 +20,10 @@ abstract class AbstractActivity<Presenter: AbstractPresenter, Adapter: AbstractD
     // Views
     protected lateinit var listView: RecyclerView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
+        val parentView: View = inflater.inflate(getLayoutId(), container, false)
+
         // Get DataSource and set vars.
         dataSource = setProperties()
         presenter = dataSource.presenter
@@ -29,12 +32,11 @@ abstract class AbstractActivity<Presenter: AbstractPresenter, Adapter: AbstractD
             adapter.buildRows()
         }
 
-        title = dataSource.pageTitle
-        setContentView(getLayoutId())
+        activity?.title = dataSource.pageTitle
 
         // RecyclerView Setup
-        listView = findViewById(getRecyclerViewId())
-        listView.layoutManager = LinearLayoutManager(this)
+        listView = parentView.findViewById(getRecyclerViewId())
+        listView.layoutManager = LinearLayoutManager(activity)
         listView.itemAnimator = DefaultItemAnimator()
         listView.adapter = adapter
 
@@ -42,6 +44,7 @@ abstract class AbstractActivity<Presenter: AbstractPresenter, Adapter: AbstractD
 
         // [HACK]: Prevents EditTexts from automatically stealing focus on initial load.
         listView.requestFocus()
+        return view
     }
 
     /**
@@ -64,7 +67,7 @@ abstract class AbstractActivity<Presenter: AbstractPresenter, Adapter: AbstractD
      * This notifies RecyclerView to reload itself.
      */
     fun reload() {
-        runOnUiThread {
+        activity?.runOnUiThread {
             adapter.reload()
         }
     }
